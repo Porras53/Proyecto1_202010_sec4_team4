@@ -4,8 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 
-import model.data_structures.ListaEncadenadaCola;
-import model.data_structures.ListaEncadenadaPila;
+import model.data_structures.ListaDoblementeEncadenada;
 import model.logic.Comparendo;
 import model.logic.Modelo;
 import view.View;
@@ -50,48 +49,21 @@ public class Controller {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				    ListaEncadenadaCola datosCola= (ListaEncadenadaCola) modelo.getDatosCola();
-				    ListaEncadenadaPila datosPila=(ListaEncadenadaPila) modelo.getDatosPila();
-				    
+				    ListaDoblementeEncadenada datosListaEncadenada= (ListaDoblementeEncadenada) modelo.getDatosListaEncadenada();
+				    double[] zonaMinimax=modelo.getZonaminiMax();
 				    view.printMessage("Lista de Comparendos cargado");
-				    view.printMessage("Primer Comparendo = " + datosCola.darCabeza().toString() + "\n---------");
-				    view.printMessage("Ultimo Comparendo = " + datosPila.darCabeza().toString() + "\n---------");
-				    view.printMessage("Numero de comparendos = " + datosCola.darLongitud() + "\n---------");
-					break;
-
-				case 2:
-					view.printMessage("--------- \nProcesando... \n---------");
-					ListaEncadenadaCola datosCola3=modelo.buscarMayorCluster();	
-					view.printMessage("Numero de comparendos encontrados: "+datosCola3.darLongitud() +" ,con el codigo de infracción:"+((Comparendo)datosCola3.darCabeza()).getInfraccion()+"\n---------");
-					int i=0;
-					while(i<datosCola3.darLongitud())
-					{
-						Comparendo c=(Comparendo) datosCola3.eliminarComienzo();
-						view.printMessage("Comparendo= Codigo Infraccion:"+c.toString2() +"\n---------");
-					}
-					
+				    view.printMessage("Primer Comparendo = " + datosListaEncadenada.darCabeza().toString() + "\n---------");
+				    view.printMessage("Ultimo Comparendo = " + datosListaEncadenada.darUltimo().toString() + "\n---------");
+				    view.printMessage("Numero de comparendos = " + datosListaEncadenada.darLongitud() + "\n---------");
+				    view.printMessage(" La zona Minimax: \n---------");
+				    view.printMessage(" La menor latitud es: "+zonaMinimax[0]+"\n---------");
+				    view.printMessage(" La menor longitud es: "+zonaMinimax[1]+"\n---------");
+				    view.printMessage(" La mayor latitud es: "+zonaMinimax[2]+"\n---------");
+				    view.printMessage(" La mayor longitud es: "+zonaMinimax[3]+"\n---------");
 					break;
 					
-				case 3:
-					view.printMessage("--------- \n Dar la cantidad de comparendos a procesar: \n---------");
-					int n= lector.nextInt();
-					view.printMessage("--------- \n Dar el codigo de la infraccion a buscar: \n---------");
-					String infraccion=lector.next();
-					view.printMessage("--------- \n Procesando... \n---------");
-					
-					
-					ListaEncadenadaCola datosCola2=modelo.buscarNcomparendosporInfraccion(n, infraccion);
-					view.printMessage("Numero de comparendos encontrados: "+datosCola2.darLongitud() +"\n---------");
-					int i2=0;
-					while(i2<datosCola2.darLongitud())
-					{
-						Comparendo c= (Comparendo) datosCola2.eliminarComienzo();
-						view.printMessage("Comparendo= Codigo Infraccion:"+c.toString2() +"\n---------");
-					}
-					
-					break;
-					
-				case 4: 
+			
+				case 2: 
 					view.printMessage("--------- \n Hasta pronto !! \n---------"); 
 					lector.close();
 					fin = true;

@@ -12,6 +12,8 @@ public class Node <E>
 	 */
 	private Node siguiente;
 	
+	private Node anterior;
+	
 	/**
 	 * 	Método Constructor
 	 * @param t2. Elemento que se almacenera en nodo.
@@ -20,6 +22,7 @@ public class Node <E>
 	{
 		e=t2;
 		siguiente=null;
+		anterior=null;
 	}
 	
 	/**
@@ -59,6 +62,14 @@ public class Node <E>
 	public void cambiarE(E e)
 	{
 		this.e=e;
+	}
+
+	public Node darAnterior() {
+		return anterior;
+	}
+
+	public void cambiarAnterior(Node anterior) {
+		this.anterior = anterior;
 	}
 	
 	

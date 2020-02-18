@@ -23,21 +23,16 @@ public class Modelo {
 	/**
 	 * Cola de lista encadenada.
 	 */
-	private ListaEncadenadaCola datosCola;
+	private ListaDoblementeEncadenada datosCola;
 
-	/**
-	 * Pila de lista encadenada.
-	 */
-
-	private ListaEncadenadaPila datosPila;
+	private double[] zonaminiMax;
 
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
 	public Modelo()
 	{
-		datosCola = new ListaEncadenadaCola();
-		datosPila = new ListaEncadenadaPila();
+		datosCola = new ListaDoblementeEncadenada();
 	}
 
 	/**
@@ -50,12 +45,17 @@ public class Modelo {
 		//Definir mejor la entrada para el lector de json
 		long inicio = System.currentTimeMillis();
 		long inicio2 = System.nanoTime();
-		String dir= "./data/comparendos_dei_2018.geojson";
+		String dir= "./data/comparendos_dei_2018_small.geojson";
 		File archivo= new File(dir);
 		JsonReader reader= new JsonReader( new InputStreamReader(new FileInputStream(archivo)));
 		JsonObject gsonObj0= JsonParser.parseReader(reader).getAsJsonObject();
 
 		JsonArray comparendos=gsonObj0.get("features").getAsJsonArray();
+		
+		double menorlatitud=90;
+		double mayorlatitud=-90;
+		double menorlongitud=180;
+		double mayorlongitud=-180;
 		int i=0;
 		while(i<comparendos.size())
 		{
@@ -76,14 +76,42 @@ public class Modelo {
 			JsonArray gsonArrcoordenadas= gsonObjgeometria.get("coordinates").getAsJsonArray();
 			double longitud= gsonArrcoordenadas.get(0).getAsDouble();
 			double latitud= gsonArrcoordenadas.get(1).getAsDouble();
+			
+			if(longitud>mayorlongitud)
+			{
+				mayorlongitud=longitud;
+				
+			}
+			else if(longitud<menorlongitud)
+			{
+				menorlongitud=longitud;
+			}
+			
+			if(latitud>mayorlatitud)
+			{
+				mayorlatitud=latitud;
+				
+			}
+			else if(latitud<menorlatitud)
+			{
+				menorlatitud=latitud;
+			}
+			
+			
 
 			Comparendo agregar=new Comparendo(objid, fecha, clasevehiculo, tiposervi, infraccion, desinfraccion, localidad, longitud,latitud);
 			datosCola.insertarFinal(agregar);
-			datosPila.insertarComienzo(agregar);
 			i++;
 		}
 		long fin2 = System.nanoTime();
 		long fin = System.currentTimeMillis();
+		
+		zonaminiMax= new double[4];
+		zonaminiMax[0]=menorlatitud;
+		zonaminiMax[1]=menorlongitud;
+		zonaminiMax[2]=mayorlatitud;
+		zonaminiMax[3]=mayorlongitud;
+		
 
 		double tiempo = (double) ((fin - inicio)/1000);
 		System.out.println((fin2-inicio2)/1.0e9 +" segundos");
@@ -92,121 +120,66 @@ public class Modelo {
 
 	}
 
-
-	/**
-	 * Busca el grupo de mayor longitud con infracción igual de forma consecutiva.
-	 * @return Cola con el grupo con mayor longitud.
-	 */
-	public ListaEncadenadaCola buscarMayorCluster()
-	{
-		ListaEncadenadaCola mayor= new ListaEncadenadaCola();
-		ListaEncadenadaCola actual= new ListaEncadenadaCola();
-		int i=0;
-		int a=datosCola.darLongitud();
-		while(i<a)
-		{
-			Comparendo c=(Comparendo) datosCola.eliminarComienzo();
-			
-			if(actual.esListaVacia())
-			{
-				actual.insertarFinal(c);
-			}
-			else{
-
-
-				if(((Comparendo)actual.darUltimo()).getInfraccion().equals(c.getInfraccion()))
-				{
-					actual.insertarFinal(c);
-				}
-				else if(!(((Comparendo)actual.darUltimo()).getInfraccion().equals(c.getInfraccion())))
-				{
-					if(actual.darLongitud()>mayor.darLongitud())
-					{
-						mayor= actual;
-					}
-					actual= new ListaEncadenadaCola();
-				}
-			}
-			i++;
-		}
-		return mayor;
-
-	}
-
-	/**
-	 * Busca en una n cantidad de comparendos, la cantidad que contienen la infracción pasada por parametro.
-	 * @param n. NUmero de comaprendos a revisar.
-	 * @param infraccion. Código de la infracción.
-	 * @return Cola con los comparendos que tenían la infracción pasada por parametro.
-	 */
-	public ListaEncadenadaCola buscarNcomparendosporInfraccion(int n,String infraccion)
-	{
-		ListaEncadenadaCola colanueva= new ListaEncadenadaCola();
-		int i=0;
-		if(datosPila.darLongitud()<n)
-		{
-			n=datosPila.darLongitud();
-		}
-		while(i<n)
-		{
-			Comparendo actual=(Comparendo) datosPila.eliminarComienzo();
-			if(actual.getInfraccion().equalsIgnoreCase(infraccion)){
-				colanueva.insertarFinal(actual);
-			}
-			i++;
-		}
-
-		return colanueva;
-	}
-
-
-	/**
-	 * Busca y retorna un comparendo en la lista con el ID dado.
-	 * @param idobject. ID del comparendo.
-	 * @return Información básica del comparendo.
-	 */
-
-	public String darInfoPorID(int idobject)
-	{
-		String retorno=null;
-		int cont=0;
-		boolean encontrado= false;
-		while(cont < datosCola.darLongitud() && !encontrado)
-		{
-			Comparendo c= (Comparendo) datosCola.darObjeto(cont);
-			if(c.getId()==idobject)
-			{
-				retorno="ID ="+c.getId()+" ,Fecha = "+c.getFecha()+" ,Infraccion ="+c.getClasevehi()+" ,Tipo de servicio="+c.getTiposervi() +" ,Localidad="+c.getLocalidad();
-				encontrado= true;
-			}
-			cont++;
-		}
-
-		if(retorno==null)
-		{
-			retorno="No existe información acerca del comparendo con ID = "+idobject;
-		}
-
-		return retorno;
-
-	}
-
+	
+	
 
 	/**
 	 * Servicio de consulta de numero de elementos presentes en el modelo 
 	 * @return numero de elementos presentes en el modelo
 	 */
 
-	public ListaEncadenadaCola getDatosCola() {
+	public ListaDoblementeEncadenada getDatosListaEncadenada() {
 		return datosCola;
 	}
 
-
-	public ListaEncadenadaPila getDatosPila() {
-		return datosPila;
+	public double[] getZonaminiMax() {
+		return zonaminiMax;
 	}
 
 
+	public Comparendo buscarPrimerComparendoLocalidad(String localidad)
+	{
+		return null;
+	}
+	
+	public Comparendo buscarPrimerComparendoInfraccion(String codigoinfraccion)
+	{
+		return null;
+	}
+	
+	public ListaDoblementeEncadenada<Comparendo> buscarComparendosPorFecha(String fecha)
+	{
+		return null;
+	}
+	public ListaDoblementeEncadenada<Comparendo> buscarComparendosPorInfraccion(String infraccion)
+	{
+		return null;
+	}
+	
+	public ListaDoblementeEncadenada<String>  buscarCantidadComparendosInfraccionPorFechas(String fechaI, String fechaF)
+	{
+		return null;
+	}
+	
+	public ListaDoblementeEncadenada<String>  buscarCantidadComparendosInfraccionPorServicio()
+	{
+		return null;
+	}
+	
+	public ListaDoblementeEncadenada<String>  buscarCantidadComparendosInfraccionPorLocalidadyFechas(String localidad,String FechaI,String fechaF)
+	{
+		return null;
+	}
+	public ListaDoblementeEncadenada<String>  buscarCantidadComparendosNInfraccionesPorFechas(String n,String FechaI,String fechaF)
+	{
+		return null;
+	}
+	public ListaDoblementeEncadenada<String>  mostrarASCIICantidadComparendosPorLocalidad()
+	{
+		return null;
+	}
+	
+	
 
 
 
