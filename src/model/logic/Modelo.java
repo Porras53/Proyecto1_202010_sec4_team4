@@ -139,7 +139,23 @@ public class Modelo {
 
 	public Comparendo buscarPrimerComparendoLocalidad(String localidad)
 	{
-		return null;
+		Node puntero= datosCola.darCabeza2();
+		int i=0;
+		boolean encontrado=false;
+		Comparendo retorno= null;
+		while(i<datosCola.darLongitud() && !encontrado)
+		{
+			if(((Comparendo)puntero.darE()).getLocalidad().equalsIgnoreCase(localidad))
+			{
+				retorno= ((Comparendo)puntero.darE());
+				encontrado=true;
+				
+			}
+			i++;
+			puntero=puntero.darSiguiente();
+		}
+		
+		return retorno;
 	}
 	
 	public Comparendo buscarPrimerComparendoInfraccion(String codigoinfraccion)
@@ -149,10 +165,30 @@ public class Modelo {
 	
 	public ListaDoblementeEncadenada<Comparendo> buscarComparendosPorFecha(String fecha)
 	{
-		return null;
+		Node puntero= datosCola.darCabeza2();
+		int i=0;
+		ListaDoblementeEncadenada<Comparendo> nueva= new ListaDoblementeEncadenada<Comparendo>();
+		while(i<datosCola.darLongitud())
+		{
+			if(((Comparendo)puntero.darE()).getFecha().equalsIgnoreCase(fecha))
+			{
+				nueva.insertarFinal(((Comparendo)puntero.darE()));
+				
+			}
+			i++;
+			puntero=puntero.darSiguiente();
+		}
+		
+		Comparable[] nuevo= copiarComparendos(nueva);
+		shellSortMayoraMenor(nuevo);
+		nueva= new ListaDoblementeEncadenada<Comparendo>();
+		pegarComparendos(nuevo, nueva);
+		
+		return nueva;
 	}
 	public ListaDoblementeEncadenada<Comparendo> buscarComparendosPorInfraccion(String infraccion)
 	{
+		
 		return null;
 	}
 	
@@ -177,6 +213,109 @@ public class Modelo {
 	public ListaDoblementeEncadenada<String>  mostrarASCIICantidadComparendosPorLocalidad()
 	{
 		return null;
+	}
+	
+	
+	public void shellSortMenoraMayor(Comparable datos[])
+	{
+		
+		int N=datos.length;
+		int h=1;
+		while(h<N/3)
+			h=3*h+1;
+		while(h>=1){
+			for(int i=h;i<N;i++)
+			{
+					for(int j=i;j>=h && less(datos[j], datos[j-h]);j-=h)
+					{
+						exch(datos,j,j-h);
+					}
+			}
+			h=h/3;
+		}
+		
+
+		
+	}
+	
+	public void shellSortMayoraMenor(Comparable datos[])
+	{
+		
+		int N=datos.length;
+		int h=1;
+		while(h<N/3)
+			h=3*h+1;
+		while(h>=1){
+			for(int i=h;i<N;i++)
+			{
+					for(int j=i;j>=h && high(datos[j], datos[j-h]);j-=h)
+					{
+						exch(datos,j,j-h);
+					}
+			}
+			h=h/3;
+		}
+		
+	
+
+		
+	}
+	
+	private boolean less(Comparable v,Comparable w)
+	{
+		return v.compareTo(w) < 0;
+	}
+	
+	private boolean high(Comparable v,Comparable w)
+	{
+		return v.compareTo(w) > 0;
+	}
+	
+	private void exch(Comparable[] datos,int i, int j)
+	{
+		Comparable t=datos[i];
+		datos[i]=datos[j];
+		datos[j]=t;
+	}
+	
+	public Comparable[] copiarComparendos()
+	{
+		int i=0;
+		Node puntero=datosCola.darCabeza2();
+		Comparable[] arreglo= new Comparable[datosCola.darLongitud()];
+		while(i<datosCola.darLongitud())
+		{
+			arreglo[i]= puntero.darE();
+			puntero=puntero.darSiguiente();
+			i++;
+		}
+		return arreglo;
+		
+	}
+	
+	public Comparable[] copiarComparendos(ListaDoblementeEncadenada datos)
+	{
+		int i=0;
+		Node puntero=datos.darCabeza2();
+		Comparable[] arreglo= new Comparable[datos.darLongitud()];
+		while(i<datos.darLongitud())
+		{
+			arreglo[i]= puntero.darE();
+			puntero=puntero.darSiguiente();
+			i++;
+		}
+		return arreglo;
+		
+	}
+	
+	public void pegarComparendos(Comparable[] copia, ListaDoblementeEncadenada nuevo)
+	{
+		int i=0;
+		while(i<copia.length)
+		{
+			nuevo.insertarFinal(copia[i]);
+			i++;
+		}
 	}
 	
 	

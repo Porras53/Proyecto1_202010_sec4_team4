@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 
 import model.data_structures.ListaDoblementeEncadenada;
+import model.data_structures.Node;
 import model.logic.Comparendo;
 import model.logic.Modelo;
 import view.View;
@@ -62,8 +63,38 @@ public class Controller {
 				    view.printMessage(" La mayor longitud es: "+zonaMinimax[3]+"\n---------");
 					break;
 					
+				case 2:
+					view.printMessage("Ingresa la localidad: \n---------"); 
+					String localidaddada=lector.next();
+					Comparendo c=modelo.buscarPrimerComparendoLocalidad(localidaddada);
+					if(c.equals(null))
+					{
+						 view.printMessage("No se encontró ningún comparendo con la localidad dada. \n---------");
+					}
+					else
+					{
+						 view.printMessage("Primer Comparendo = " + c.toString() + "\n---------");
+					}
+					
+					break;
+					
+				case 3:
+					view.printMessage("Ingresa la fecha( Año/Mes/Dia ): \n---------"); 
+					String fechadada=lector.next();
+					ListaDoblementeEncadenada nueva=modelo.buscarComparendosPorFecha(fechadada);
+					int i=0;
+					Node puntero=nueva.darCabeza2();
+					while(i<nueva.darLongitud())
+					{
+						view.printMessage(puntero.darE().toString() + "\n---------");
+						puntero=puntero.darSiguiente();
+						i++;
+					}
+					
+					
+					break;
 			
-				case 2: 
+				case 4: 
 					view.printMessage("--------- \n Hasta pronto !! \n---------"); 
 					lector.close();
 					fin = true;

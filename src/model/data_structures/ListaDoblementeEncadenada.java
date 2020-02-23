@@ -2,7 +2,7 @@ package model.data_structures;
 
 import java.util.Iterator;
 
-public class ListaDoblementeEncadenada <T>
+public class ListaDoblementeEncadenada <T extends Comparable<T>> 
 {
 	
 	/**
@@ -40,6 +40,12 @@ public class ListaDoblementeEncadenada <T>
 	public T darCabeza()
 	{
 		return cabeza.darE();
+	}
+	
+	
+	public Node<T> darCabeza2()
+	{
+		return cabeza;
 	}
 	
 	/**
@@ -161,7 +167,7 @@ public class ListaDoblementeEncadenada <T>
 	 * @return Elemento de clase génerica.
 	 */
 	
-	public T darObjeto(int pos)
+	public Node darObjeto(int pos)
 	{
 		if(cabeza==null)
 		{
@@ -182,7 +188,7 @@ public class ListaDoblementeEncadenada <T>
 			}
 			else
 			{
-				return (T) puntero.darE();
+				return puntero;
 				
 			}
 		
@@ -199,6 +205,12 @@ public class ListaDoblementeEncadenada <T>
 	public T darUltimo()
 	{
 		return ultimo.darE();
+	}
+	
+	
+	public Node<T> darUltimo2()
+	{
+		return ultimo;
 	}
 	
 	

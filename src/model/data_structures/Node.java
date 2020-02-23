@@ -1,6 +1,6 @@
 package model.data_structures;
 
-public class Node <E>
+public class Node <E extends Comparable<E>>
 {
 	/**
 	 * Elemento Génerico que se almacena en el nodo.

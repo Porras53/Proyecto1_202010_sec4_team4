@@ -1,6 +1,6 @@
 package model.logic;
 
-public class Comparendo{
+public class Comparendo implements Comparable<Comparendo>{
 
 	private int id;
 	private String fecha;
@@ -91,6 +91,47 @@ public class Comparendo{
 
 	public void setLocalidad(String localidad) {
 		this.localidad = localidad;
+	}
+
+	@Override
+	public int compareTo(Comparendo compa) {
+		// TODO Auto-generated method stub
+		String realinfra=infraccion;
+		String infra= compa.getInfraccion();
+
+		
+		int retorno=0;
+		
+		if(realinfra.compareTo(infra)<0){ retorno=-1;}
+		else if(realinfra.compareTo(infra)>0){ retorno=1;}
+		
+		return retorno;
+	}
+	
+	public int compareTo2(Comparendo compa) {
+		// TODO Auto-generated method stub
+		String[] datosreal=fecha.split("/");
+		String[] datos= compa.getFecha().split("/");
+
+		int mes1=Integer.parseInt(datosreal[1]);
+		int mes=Integer.parseInt(datos[1]);
+		int dia1= Integer.parseInt(datosreal[2]);
+		int dia= Integer.parseInt(datos[2]);
+		
+		int retorno=0;
+		
+		if(mes1>mes){ retorno=1;}
+		else if(mes1<mes) {retorno=-1;}
+		else if(dia1>dia) {retorno=1;}
+		else if(dia1<dia) {retorno=-1;}
+		
+		if(retorno==0)
+		{
+			if(id>compa.getId()) {retorno=1;}
+			else if(id<compa.getId()) {retorno=-1;}
+		}
+		
+		return retorno;
 	}
 
 
