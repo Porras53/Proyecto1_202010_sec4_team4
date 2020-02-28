@@ -233,10 +233,6 @@ public class Modelo {
 			i++;
 		}
 		
-		System.out.println(fecha1.darCabeza());
-		System.out.println(fecha1.darCabeza2().darSiguiente().darE());
-		System.out.println(fecha1.darCabeza2().darSiguiente().darSiguiente().darE());
-		
 		ListaDoblementeEncadenada fecha2= new ListaDoblementeEncadenada<>();
 		
 		i=0;
@@ -287,18 +283,41 @@ public class Modelo {
 			int j=0;
 			boolean encontrado=false;
 			Node puntero2=fecha2.darCabeza2();
-			while(j<fecha2.darLongitud() && !encontrado && puntero!=null)
+			while(j<fecha2.darLongitud() && !encontrado && puntero2!=null)
 			{
 				String actual1=(String) puntero2.darE();
 				String[] iyc1=actual.split("/");
 				
 				if(iyc[0].equals(iyc1[0]))
 				{
-					retorno.insertarFinal(iyc[0]+"|"+iyc[1]+"|"+iyc1[1]);
+					
+					retorno.insertarFinal(iyc[0]+" | "+iyc[1]+" | "+iyc1[1]);
 					encontrado=true;
+					
+					Node anterior= puntero2.darAnterior();
+					Node siguiente= puntero2.darSiguiente();
+					
+					if(anterior!=null && siguiente!=null)
+					{
+					siguiente.cambiarAnterior(anterior);
+					anterior.cambiarSiguiente(siguiente);
+					}
+					else if(anterior==null && siguiente!=null)
+					{
+						fecha2.eliminarComienzo();
+					}
+					else if(anterior!=null && siguiente==null)
+					{
+						fecha2.eliminarFinal();
+					}
+					else if(anterior==null && siguiente==null)
+					{
+						fecha2.eliminarComienzo();
+					}
 				}
 				
-				if(puntero2.darSiguiente()!=null){
+				if(puntero2.darSiguiente()!=null)
+				{
 				puntero2=puntero2.darSiguiente();
 				}
 				
@@ -307,7 +326,7 @@ public class Modelo {
 			
 			if(!encontrado)
 			{
-				retorno.insertarFinal(iyc[0]+"|"+iyc[1]+"|"+0);
+				retorno.insertarFinal(iyc[0]+" | "+iyc[1]+" | "+0);
 			}
 			
 			if(puntero.darSiguiente()!=null){
@@ -316,7 +335,26 @@ public class Modelo {
 			i++;
 		}
 		
-		return null;
+	if(!fecha2.esListaVacia()){	
+		i=0;
+		puntero=fecha2.darCabeza2();
+		String actual1=(String) puntero.darE();
+		String[] iyc1=actual1.split("/");
+		while(i<retorno.darLongitud())
+		{
+			
+			retorno.insertarFinal(iyc1[0]+" | "+0+" | "+iyc1[1]);
+			if(puntero.darSiguiente()!=null)
+			{
+			puntero=puntero.darSiguiente();
+			}
+			i++;
+		}
+		
+	}	
+		
+		
+		return retorno;
 	}
 	
 	public ListaDoblementeEncadenada<String>  buscarCantidadComparendosInfraccionPorServicio()

@@ -105,6 +105,18 @@ public class Controller {
 					
 					ListaDoblementeEncadenada nuevo0=modelo.buscarCantidadComparendosInfraccionPorFechas(fechadada1, fechadada2);
 					
+					view.printMessage("Comparación de comparendos por Infracción en dos fechas:");
+					view.printMessage("Infraccion | "+fechadada1+" | "+fechadada2);
+					int i2=0;
+					Node puntero1=nuevo0.darCabeza2();
+					while(i2<nuevo0.darLongitud())
+					{
+						view.printMessage(puntero1.darE() + "\n---------");
+						
+						puntero=puntero1.darSiguiente();
+						i2++;
+					}
+					
 					break;
 					
 				case 5: 
