@@ -17,7 +17,8 @@ public class View
 			System.out.println("1. Cargar comparendos.");
 			System.out.println("2. Buscar primero por Localidad dada.");
 			System.out.println("3. Buscar comparendos por fecha.");
-			System.out.println("4. Exit");
+			System.out.println("4. Buscar comparendos por dos fechas.");
+			System.out.println("5. Exit");
 			System.out.println("Dar el numero de opcion a resolver, luego oprimir tecla Return: (e.g., 1):");
 		}
 

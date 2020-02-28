@@ -61,7 +61,6 @@ public class Modelo {
 		{
 			JsonElement obj= comparendos.get(i);
 			JsonObject gsonObj= obj.getAsJsonObject();
-
 			JsonObject gsonObjpropiedades=gsonObj.get("properties").getAsJsonObject();
 			int objid= gsonObjpropiedades.get("OBJECTID").getAsInt();
 			String fecha= gsonObjpropiedades.get("FECHA_HORA").getAsString();
@@ -194,6 +193,129 @@ public class Modelo {
 	
 	public ListaDoblementeEncadenada<String>  buscarCantidadComparendosInfraccionPorFechas(String fechaI, String fechaF)
 	{
+		ListaDoblementeEncadenada nuevo1= buscarComparendosPorFecha(fechaI);
+		ListaDoblementeEncadenada nuevo2= buscarComparendosPorFecha(fechaF);
+		
+		ListaDoblementeEncadenada fecha1= new ListaDoblementeEncadenada<>();
+		
+		int i=0;
+		Node puntero=nuevo1.darCabeza2();
+		String infraccionactual=((Comparendo)puntero.darE()).getInfraccion();
+		int cont=1;
+		while(i<nuevo1.darLongitud() && puntero!=null)
+		{
+			Comparendo actualsiguiente=null;
+			
+			String infrasiguiente=null;
+			
+			if(puntero.darSiguiente()!=null){
+			 actualsiguiente=(Comparendo)puntero.darSiguiente().darE();
+			 infrasiguiente=actualsiguiente.getInfraccion();
+			}
+			
+			if(infrasiguiente==null)
+			{
+				fecha1.insertarComienzo(infraccionactual+"/"+cont);
+			}
+			
+			else if(infraccionactual.equals(infrasiguiente))
+			{
+				cont++;
+			}
+			else if(!infraccionactual.equals(infrasiguiente))
+			{
+				fecha1.insertarComienzo(infraccionactual+"/"+cont);
+				cont=1;
+				infraccionactual=infrasiguiente;
+			}
+			
+			puntero=puntero.darSiguiente();
+			i++;
+		}
+		
+		System.out.println(fecha1.darCabeza());
+		System.out.println(fecha1.darCabeza2().darSiguiente().darE());
+		System.out.println(fecha1.darCabeza2().darSiguiente().darSiguiente().darE());
+		
+		ListaDoblementeEncadenada fecha2= new ListaDoblementeEncadenada<>();
+		
+		i=0;
+		puntero=nuevo2.darCabeza2();
+		infraccionactual=((Comparendo)puntero.darE()).getInfraccion();
+		cont=1;
+		
+		while(i<nuevo2.darLongitud() && puntero!=null)
+		{
+			Comparendo actualsiguiente=null;
+			
+			String infrasiguiente=null;
+			
+			if(puntero.darSiguiente()!=null){
+			 actualsiguiente=(Comparendo)puntero.darSiguiente().darE();
+			 infrasiguiente=actualsiguiente.getInfraccion();
+			}
+			
+			if(infrasiguiente==null)
+			{
+				fecha2.insertarComienzo(infraccionactual+"/"+cont);
+			}
+			
+			else if(infraccionactual.equals(infrasiguiente))
+			{
+				cont++;
+			}
+			else if(!infraccionactual.equals(infrasiguiente))
+			{
+				fecha2.insertarComienzo(infraccionactual+"/"+cont);
+				cont=1;
+				infraccionactual=infrasiguiente;
+			}
+			
+			puntero=puntero.darSiguiente();
+			i++;
+		}
+		
+		ListaDoblementeEncadenada retorno=new ListaDoblementeEncadenada<>();
+		
+		i=0;
+		puntero=fecha1.darCabeza2();
+		while(i<fecha1.darLongitud() && puntero!=null)
+		{
+			String actual=(String)puntero.darE();
+			String[] iyc=actual.split("/");
+			
+			int j=0;
+			boolean encontrado=false;
+			Node puntero2=fecha2.darCabeza2();
+			while(j<fecha2.darLongitud() && !encontrado && puntero!=null)
+			{
+				String actual1=(String) puntero2.darE();
+				String[] iyc1=actual.split("/");
+				
+				if(iyc[0].equals(iyc1[0]))
+				{
+					retorno.insertarFinal(iyc[0]+"|"+iyc[1]+"|"+iyc1[1]);
+					encontrado=true;
+				}
+				
+				if(puntero2.darSiguiente()!=null){
+				puntero2=puntero2.darSiguiente();
+				}
+				
+				j++;
+			}
+			
+			if(!encontrado)
+			{
+				retorno.insertarFinal(iyc[0]+"|"+iyc[1]+"|"+0);
+			}
+			
+			if(puntero.darSiguiente()!=null){
+			puntero= puntero.darSiguiente();
+			}
+			i++;
+		}
+		
 		return null;
 	}
 	

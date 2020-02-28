@@ -81,7 +81,9 @@ public class Controller {
 				case 3:
 					view.printMessage("Ingresa la fecha( Año/Mes/Dia ): \n---------"); 
 					String fechadada=lector.next();
+					
 					ListaDoblementeEncadenada nueva=modelo.buscarComparendosPorFecha(fechadada);
+					
 					int i=0;
 					Node puntero=nueva.darCabeza2();
 					while(i<nueva.darLongitud())
@@ -94,7 +96,18 @@ public class Controller {
 					
 					break;
 			
-				case 4: 
+				case 4:
+					view.printMessage("Ingresa la fecha inicial( Año/Mes/Dia ): \n---------"); 
+					String fechadada1=lector.next();
+					
+					view.printMessage("Ingresa la fecha final( Año/Mes/Dia ): \n---------"); 
+					String fechadada2=lector.next();
+					
+					ListaDoblementeEncadenada nuevo0=modelo.buscarCantidadComparendosInfraccionPorFechas(fechadada1, fechadada2);
+					
+					break;
+					
+				case 5: 
 					view.printMessage("--------- \n Hasta pronto !! \n---------"); 
 					lector.close();
 					fin = true;
