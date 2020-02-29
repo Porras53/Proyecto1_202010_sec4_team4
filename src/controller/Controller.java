@@ -111,9 +111,9 @@ public class Controller {
 					Node puntero1=nuevo0.darCabeza2();
 					while(i2<nuevo0.darLongitud())
 					{
-						view.printMessage(puntero1.darE() + "\n---------");
+						view.printMessage(puntero1.darE().toString() + "\n---------");
 						
-						puntero=puntero1.darSiguiente();
+						puntero1=puntero1.darSiguiente();
 						i2++;
 					}
 					
