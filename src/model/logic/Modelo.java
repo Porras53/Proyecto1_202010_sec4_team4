@@ -4,12 +4,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.util.Random;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 
 import model.data_structures.*;
-import sun.misc.IOUtils;
+
 
 /**
  * Definicion del modelo del mundo
@@ -19,11 +20,11 @@ public class Modelo {
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	
+
 	/**
 	 * Cola de lista encadenada.
 	 */
-	private ListaEncadenadaCola datosCola;
+	private ListaEncadenadaCola<Comparendo> datosCola;
 
 	/**
 	 * Pila de lista encadenada.
@@ -50,14 +51,29 @@ public class Modelo {
 		//Definir mejor la entrada para el lector de json
 		long inicio = System.currentTimeMillis();
 		long inicio2 = System.nanoTime();
-		String dir= "./data/comparendos_dei_2018.geojson";
+		String dir= "./data/comparendos_dei_2018.geojson.json";
 		File archivo= new File(dir);
 		JsonReader reader= new JsonReader( new InputStreamReader(new FileInputStream(archivo)));
 		JsonObject gsonObj0= JsonParser.parseReader(reader).getAsJsonObject();
 
 		JsonArray comparendos=gsonObj0.get("features").getAsJsonArray();
 		int i=0;
-		while(i<comparendos.size())
+		//String clasevehiculo= "";
+//		if(gsonObjpropiedades.get("CLASE_VEHI")!=null)
+//			 clasevehiculo=gsonObjpropiedades.get("CLASE_VEHI").getAsString();
+//		String tiposervi= "";
+//		if(gsonObjpropiedades.get("TIPO_SERVI")!=null)
+//		 tiposervi=gsonObjpropiedades.get("TIPO_SERVI").getAsString();
+//		String infraccion= "";
+//		if(gsonObjpropiedades.get("INFRACCION")!=null)
+//		 infraccion=gsonObjpropiedades.get("INFRACCION").getAsString();
+//		String desinfraccion= "";
+//		if(gsonObjpropiedades.get("DES_INFRAC")!=null)
+//		 desinfraccion=gsonObjpropiedades.get("DES_INFRAC").getAsString();
+//		String localidad	= "";
+//		if(gsonObjpropiedades.get("LOCALIDAD")!=null)
+//		 localidad=gsonObjpropiedades.get("LOCALIDAD").getAsString();
+		while(i<comparendos.size()-1)
 		{
 			JsonElement obj= comparendos.get(i);
 			JsonObject gsonObj= obj.getAsJsonObject();
@@ -65,10 +81,10 @@ public class Modelo {
 			JsonObject gsonObjpropiedades=gsonObj.get("properties").getAsJsonObject();
 			int objid= gsonObjpropiedades.get("OBJECTID").getAsInt();
 			String fecha= gsonObjpropiedades.get("FECHA_HORA").getAsString();
-			String clasevehiculo=gsonObjpropiedades.get("CLASE_VEHI").getAsString();
-			String tiposervi=gsonObjpropiedades.get("TIPO_SERVI").getAsString();
+			String clasevehiculo=gsonObjpropiedades.get("CLASE_VEHICULO").getAsString();
+			String tiposervi=gsonObjpropiedades.get("TIPO_SERVICIO").getAsString();
 			String infraccion=gsonObjpropiedades.get("INFRACCION").getAsString();
-			String desinfraccion=gsonObjpropiedades.get("DES_INFRAC").getAsString();
+			String desinfraccion=gsonObjpropiedades.get("DES_INFRACCION").getAsString();
 			String localidad=gsonObjpropiedades.get("LOCALIDAD").getAsString();
 
 			JsonObject gsonObjgeometria=gsonObj.get("geometry").getAsJsonObject();
@@ -94,7 +110,7 @@ public class Modelo {
 
 
 	/**
-	 * Busca el grupo de mayor longitud con infracción igual de forma consecutiva.
+	 * Busca el grupo de mayor longitud con infracciï¿½n igual de forma consecutiva.
 	 * @return Cola con el grupo con mayor longitud.
 	 */
 	public ListaEncadenadaCola buscarMayorCluster()
@@ -106,7 +122,7 @@ public class Modelo {
 		while(i<a)
 		{
 			Comparendo c=(Comparendo) datosCola.eliminarComienzo();
-			
+
 			if(actual.esListaVacia())
 			{
 				actual.insertarFinal(c);
@@ -134,10 +150,10 @@ public class Modelo {
 	}
 
 	/**
-	 * Busca en una n cantidad de comparendos, la cantidad que contienen la infracción pasada por parametro.
+	 * Busca en una n cantidad de comparendos, la cantidad que contienen la infracciï¿½n pasada por parametro.
 	 * @param n. NUmero de comaprendos a revisar.
-	 * @param infraccion. Código de la infracción.
-	 * @return Cola con los comparendos que tenían la infracción pasada por parametro.
+	 * @param infraccion. Cï¿½digo de la infracciï¿½n.
+	 * @return Cola con los comparendos que tenï¿½an la infracciï¿½n pasada por parametro.
 	 */
 	public ListaEncadenadaCola buscarNcomparendosporInfraccion(int n,String infraccion)
 	{
@@ -159,11 +175,61 @@ public class Modelo {
 		return colanueva;
 	}
 
+	public Comparendo method1B (String infraccion)
+	{
+		Comparendo resp =null;
+		ListaEncadenadaCola<Comparendo> colaAuxiliar= datosCola;
+		int length = colaAuxiliar.darLongitud();
+		for(int i=0; i< length && resp==null; i++)
+		{
+			Comparendo temp=  colaAuxiliar.eliminarComienzo();
+			
+			if(infraccion.compareTo(temp.getInfraccion())==0)
+			{
+				resp=temp;
 
+			}
+		}
+		return resp;
+    }
+	
+	
+	
+	
+	
+	
+	
+	public Comparendo[] method2B (String infraccion)
+	{
+		ListaEncadenadaPila<Comparendo> resp = new ListaEncadenadaPila<Comparendo>();
+		ListaEncadenadaCola<Comparendo> colaAuxiliar= datosCola;
+		int length = colaAuxiliar.darLongitud();
+		for(int i=0; i< length ;i++)
+		{
+			Comparendo temp=  colaAuxiliar.eliminarComienzo();
+			
+			if(infraccion.compareTo(temp.getInfraccion())==0)
+			{
+				resp.insertarComienzo(temp);;
+
+			}
+		}
+		Comparendo[]  aOrdenar = new Comparendo[resp.darLongitud()];
+		int i= 0;
+		while(!resp.esListaVacia())
+		{
+			aOrdenar[i]= resp.eliminarComienzo();
+			aOrdenar[i].setConstanteComparaciones(1);
+			i++;
+		}
+		quickSort(aOrdenar);
+		
+		return aOrdenar;
+    }
 	/**
 	 * Busca y retorna un comparendo en la lista con el ID dado.
 	 * @param idobject. ID del comparendo.
-	 * @return Información básica del comparendo.
+	 * @return Informaciï¿½n bï¿½sica del comparendo.
 	 */
 
 	public String darInfoPorID(int idobject)
@@ -184,7 +250,7 @@ public class Modelo {
 
 		if(retorno==null)
 		{
-			retorno="No existe información acerca del comparendo con ID = "+idobject;
+			retorno="No existe informaciï¿½n acerca del comparendo con ID = "+idobject;
 		}
 
 		return retorno;
@@ -205,9 +271,61 @@ public class Modelo {
 	public ListaEncadenadaPila getDatosPila() {
 		return datosPila;
 	}
+	
+	
+	private static int partition(Comparable[] a,int lo, int hi)
+	{
+		int i=lo, j=hi+1;
+		Comparable v= a[lo];
+		while(true)
+		{
+			while(less(a[++i],v)) if (i==hi) break;
+			while (less (v, a[--j])) if(j== lo) break;
+			if(i >= j) break;
+			exch(a,i,j);
+		}
+		exch(a,lo,j);
+		return j;
+	}
+	public static void quickSort(Comparable[] a)
+	{
+		shuffle(a);
+		quickSort(a,0,a.length-1);
+	}
+	
+	private static void shuffle(Comparable[] a)
+	{
+		Random r= new Random();
+		for(int i= a.length-1;i>0;i--)
+		{
+			int index= r.nextInt(i+1);
+			Comparable a2= a[index];
+			a[index]=a[i];
+			a[i]=a2;
+		}
+	}
+	
+	public static void quickSort(Comparable[] a,int lo,int hi)
+	{
+		if(hi<=lo) return;
+		int j= partition(a,lo,hi);
+		quickSort(a,lo,j-1);
+		quickSort(a,j+1,hi);
+	}
+	
+	private static boolean less(Comparable v,Comparable w)
+	{
+		return v.compareTo(w) < 0;
+	}
 
 
 
+	private static void exch(Comparable[] datos,int i, int j)
+	{
+		Comparable t=datos[i];
+		datos[i]=datos[j];
+		datos[j]=t;
+	}
 
 
 

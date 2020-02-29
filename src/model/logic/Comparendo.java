@@ -1,6 +1,6 @@
 package model.logic;
 
-public class Comparendo{
+public class Comparendo implements Comparable<Comparendo>{
 
 	private int id;
 	private String fecha;
@@ -11,7 +11,7 @@ public class Comparendo{
 	private String localidad;
 	private double longitud;
 	private double latitud;
-	
+	private int constanteComparaciones;
 	public Comparendo(int id,String fecha, String clasevehiculo,String tiposervicio,String infraccion,String desinfraccion,String localidad, double longitud,double latitud)
 	{
 		this.id= id;
@@ -23,6 +23,7 @@ public class Comparendo{
 		this.localidad=localidad;
 		this.longitud=longitud;
 		this.latitud=latitud;
+		constanteComparaciones=0;
 	}
 
 	@Override
@@ -34,7 +35,7 @@ public class Comparendo{
 	public String toString2()
 	{
 		return "Comparendo [ infraccion=" + infraccion+" , id=" + id + ", fecha=" + fecha + ", clase de vehiculo=" + clasevehi + ", tipo de servicio=" + tiposervi
-				 + ", localidad=" + localidad +"]";
+				+ ", localidad=" + localidad +"]";
 	}
 
 	public int getId() {
@@ -92,9 +93,52 @@ public class Comparendo{
 	public void setLocalidad(String localidad) {
 		this.localidad = localidad;
 	}
+	public void setConstanteComparaciones(int num)
+	{
+		constanteComparaciones= num;
+	}
+
+	@Override
+	public int compareTo(Comparendo o) {
+		if(constanteComparaciones==0)
+		{
+			if(id>o.getId()) 
+				return 1;
+			else if( id==o.getId())
+				return 0;
+			else 
+				return -1;
+		}
+		if(constanteComparaciones==1)
+		{
+			String[] datosreal=fecha.split("/");
+			String[] datos= o.getFecha().split("/");
+
+			int mes1=Integer.parseInt(datosreal[1]);
+			int mes=Integer.parseInt(datos[1]);
+			int dia1= Integer.parseInt(datosreal[2]);
+			int dia= Integer.parseInt(datos[2]);
+
+			int retorno=0;
+
+			if(mes1>mes){ retorno=1;}
+			else if(mes1<mes) {retorno=-1;}
+			else if(dia1>dia) {retorno=1;}
+			else if(dia1<dia) {retorno=-1;}
+
+			if(retorno==0)
+			{
+				if(id>o.getId()) {retorno=1;}
+				else if(id<o.getId()) {retorno=-1;}
+			}
+
+			return retorno;
+		}
+		return 0;
+	}
 
 
 
-	
-	
+
+
 }
