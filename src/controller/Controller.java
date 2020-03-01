@@ -73,12 +73,28 @@ public class Controller {
 					}
 					else
 					{
-						 view.printMessage("Primer Comparendo = " + c.toString() + "\n---------");
+						 view.printMessage("Primer Comparendo encontrado= " + c.toString() + "\n---------");
 					}
 					
 					break;
 					
-				case 3:
+				case 3: 
+					
+					view.printMessage("Ingresa el codigo de infraccion: \n---------"); 
+					String infracciondada=lector.next();
+					Comparendo co=modelo.buscarPrimerComparendoInfraccion(infracciondada);
+					if(co.equals(null))
+					{
+						 view.printMessage("No se encontró ningún comparendo con la localidad dada. \n---------");
+					}
+					else
+					{
+						 view.printMessage("Primer Comparendo encontrado= " + co.toString() + "\n---------");
+					}
+					
+					break;
+					
+				case 4:
 					view.printMessage("Ingresa la fecha( Año/Mes/Dia ): \n---------"); 
 					String fechadada=lector.next();
 					
@@ -93,11 +109,31 @@ public class Controller {
 						i++;
 					}
 					
-					view.printMessage("La cantidad de comaprendos la búsqueda fue: "+nueva.darLongitud());
+					view.printMessage("La cantidad de comparendos la búsqueda fue: "+nueva.darLongitud());
+					
+					break;
+					
+				case 5: 
+					
+					view.printMessage("Ingresa el código de infracción: \n---------"); 
+					String codinfra=lector.next();
+					
+					ListaDoblementeEncadenada nuevaaa=modelo.buscarComparendosPorInfraccion(codinfra);
+					
+					i=0;
+					puntero=nuevaaa.darCabeza2();
+					while(i<nuevaaa.darLongitud())
+					{
+						view.printMessage(puntero.darE().toString() + "\n---------");
+						puntero=puntero.darSiguiente();
+						i++;
+					}
+					
+					view.printMessage("La cantidad de comparendos la búsqueda fue: "+nuevaaa.darLongitud());
 					
 					break;
 			
-				case 4:
+				case 6:
 					view.printMessage("Ingresa la fecha inicial( Año/Mes/Dia ): \n---------"); 
 					String fechadada1=lector.next();
 					
@@ -120,7 +156,11 @@ public class Controller {
 					
 					break;
 					
-				case 5: 
+				case 7: 
+					
+					break;
+					
+				case 8: 
 					view.printMessage("Ingrese la localidad: \n---------"); 
 					String localidad=lector.next();
 					
@@ -146,7 +186,7 @@ public class Controller {
 					
 					break;	
 					
-				case 6: 
+				case 9: 
 					view.printMessage("Ingrese la cantidad de comparendos mayores que quiere ver: \n---------"); 
 					String n=lector.next();
 					
@@ -173,7 +213,11 @@ public class Controller {
 					
 					break;	
 					
-				case 7: 
+				case 10: 
+					
+					break;	
+					
+				case 11: 
 					view.printMessage("--------- \n Hasta pronto !! \n---------"); 
 					lector.close();
 					fin = true;

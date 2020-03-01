@@ -11,7 +11,7 @@ public class Comparendo implements Comparable<Comparendo>{
 	private String localidad;
 	private double longitud;
 	private double latitud;
-	
+	private int constanteComparaciones;
 	public Comparendo(int id,String fecha, String clasevehiculo,String tiposervicio,String infraccion,String desinfraccion,String localidad, double longitud,double latitud)
 	{
 		this.id= id;
@@ -23,6 +23,7 @@ public class Comparendo implements Comparable<Comparendo>{
 		this.localidad=localidad;
 		this.longitud=longitud;
 		this.latitud=latitud;
+		constanteComparaciones=0;
 	}
 
 	@Override
@@ -96,46 +97,49 @@ public class Comparendo implements Comparable<Comparendo>{
 	@Override
 	public int compareTo(Comparendo compa) {
 		// TODO Auto-generated method stub
-		String realinfra=infraccion;
-		String infra= compa.getInfraccion();
-
+		
 		
 		int retorno=0;
-		
-		if(realinfra.compareTo(infra)<0){ retorno=-1;}
-		else if(realinfra.compareTo(infra)>0){ retorno=1;}
-		
-		return retorno;
-	}
-	
-	public int compareTo2(Comparendo compa) {
-		// TODO Auto-generated method stub
-		String[] datosreal=fecha.split("/");
-		String[] datos= compa.getFecha().split("/");
-
-		int mes1=Integer.parseInt(datosreal[1]);
-		int mes=Integer.parseInt(datos[1]);
-		int dia1= Integer.parseInt(datosreal[2]);
-		int dia= Integer.parseInt(datos[2]);
-		
-		int retorno=0;
-		
-		if(mes1>mes){ retorno=1;}
-		else if(mes1<mes) {retorno=-1;}
-		else if(dia1>dia) {retorno=1;}
-		else if(dia1<dia) {retorno=-1;}
-		
-		if(retorno==0)
+		if(constanteComparaciones==0)
 		{
-			if(id>compa.getId()) {retorno=1;}
-			else if(id<compa.getId()) {retorno=-1;}
+			String realinfra=infraccion;
+			String infra= compa.getInfraccion();
+
+		
+		
+			if(realinfra.compareTo(infra)<0){ retorno=-1;}
+			else if(realinfra.compareTo(infra)>0){ retorno=1;}
+		}
+		else if(constanteComparaciones==1)
+		{
+			String[] datosreal=fecha.split("/");
+			String[] datos= compa.getFecha().split("/");
+
+			int mes1=Integer.parseInt(datosreal[1]);
+			int mes=Integer.parseInt(datos[1]);
+			int dia1= Integer.parseInt(datosreal[2]);
+			int dia= Integer.parseInt(datos[2]);
+			
+			
+			
+			if(mes1>mes){ retorno=1;}
+			else if(mes1<mes) {retorno=-1;}
+			else if(dia1>dia) {retorno=1;}
+			else if(dia1<dia) {retorno=-1;}
+			
 		}
 		
+		
 		return retorno;
 	}
 
+	public int getConstanteComparaciones() {
+		return constanteComparaciones;
+	}
 
-
+	public void setConstanteComparaciones(int constanteComparaciones) {
+		this.constanteComparaciones = constanteComparaciones;
+	}
 	
 	
 }
