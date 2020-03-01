@@ -48,6 +48,7 @@ public class Modelo {
 
 	public void cargar() throws FileNotFoundException
 	{
+		try {
 		//Definir mejor la entrada para el lector de json
 		long inicio = System.currentTimeMillis();
 		long inicio2 = System.nanoTime();
@@ -75,6 +76,7 @@ public class Modelo {
 //		 localidad=gsonObjpropiedades.get("LOCALIDAD").getAsString();
 		while(i<comparendos.size()-1)
 		{
+			
 			JsonElement obj= comparendos.get(i);
 			JsonObject gsonObj= obj.getAsJsonObject();
 
@@ -104,6 +106,10 @@ public class Modelo {
 		double tiempo = (double) ((fin - inicio)/1000);
 		System.out.println((fin2-inicio2)/1.0e9 +" segundos");
 		System.out.println(tiempo +" segundos");
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
 
 
 	}
@@ -210,7 +216,7 @@ public class Modelo {
 			
 			if(infraccion.compareTo(temp.getInfraccion())==0)
 			{
-				resp.insertarComienzo(temp);;
+				resp.insertarComienzo(temp);
 
 			}
 		}
@@ -226,6 +232,123 @@ public class Modelo {
 		
 		return aOrdenar;
     }
+	
+	
+	
+	public String CompararComparendos3B()
+	{
+		System.out.println("prueba");
+		String respuesta = "Infraccion  |particular  |publico \n";
+		int contadorPublico = 0;
+		int contadorPrivado =0;
+
+		Comparendo[] nuevoArreglo= new Comparendo[datosCola.darLongitud()];
+		ListaEncadenadaCola<Comparendo> lista = datosCola;
+				
+		int i =0;
+		while(i<datosCola.darLongitud())
+		{
+			
+			nuevoArreglo[i] = lista.darCabeza();
+			lista.eliminarComienzo();
+			
+			i++;
+			
+		}
+		
+
+		
+			shellSortMenoraMayor(nuevoArreglo); 
+			System.out.println("prueba");
+		String infraccionActual = nuevoArreglo[0].getInfraccion();
+		for (int j = 0; j < nuevoArreglo.length; j++) {
+
+			if(!infraccionActual.equals(nuevoArreglo[j].getInfraccion()))
+			{
+				respuesta += infraccionActual + "   | "+contadorPrivado+"     |"+contadorPublico+"\n";
+				contadorPrivado =0;
+				contadorPublico =0;
+				infraccionActual = nuevoArreglo[j].getInfraccion();
+
+			}
+
+			if(nuevoArreglo[j].getTiposervi().equals("Particular"))
+			{
+				contadorPrivado++;
+			}
+			else
+			{
+				contadorPublico++;
+			}
+
+		}
+		return respuesta;
+	}
+	public void shellSortMenoraMayor(Comparendo datos[])
+	{
+		
+	
+		int j;
+	    for( int gap = datos.length / 2; gap > 0; gap /= 2 )
+	    {
+	      for( int i = gap; i < datos.length; i++ )
+	      {
+	         Comparendo tmp = datos[ i ];
+	         for( j = i; j >= gap && tmp.compareTo( datos[ j - gap ] ) < 0; j -= gap )
+	         {
+	           datos[ j ] = datos[ j - gap ];
+	         }
+	         datos[ j ] = tmp;
+	      }
+	    }
+	}
+	
+	
+	public String generarGrafica3C()
+	{
+		String Respuesta= "Aproximación del número de comparendos por localidad. \n";
+		int contadorComparendos=0;
+		Comparendo[] nuevoArreglo= new Comparendo[datosCola.darLongitud()];
+		
+		Node<Comparendo> actual= new Node<Comparendo>(datosCola.darCabeza());
+		int i =0;
+		while(actual!=null)
+		{
+			nuevoArreglo[i] = actual.darE();
+			actual.darE().setConstanteComparaciones(2);
+			actual=actual.darSiguiente();
+			i++;
+		}
+		shellSortMenoraMayor(nuevoArreglo);
+		String LocalidadActual = nuevoArreglo[0].getLocalidad();
+		for (int j = 0; j < nuevoArreglo.length; j++) {
+			
+			if(!LocalidadActual.equals(nuevoArreglo[j].getLocalidad()))
+			{
+				int cantidadAsteriscos = contadorComparendos/50;
+				int diferencia = 16- LocalidadActual.length();
+				Respuesta+= LocalidadActual;
+				for (int k = 0; k < diferencia; k++) {
+					Respuesta+= "-";
+				}
+				Respuesta+= "|";
+				for (int k = 0; k < cantidadAsteriscos; k++) {
+					Respuesta+= "*";
+				}
+				if(contadorComparendos % 50 !=0)
+					Respuesta+="*";
+				Respuesta+="\n";
+				
+				
+				contadorComparendos=0;
+				LocalidadActual= nuevoArreglo[j].getLocalidad();
+			}
+			contadorComparendos++;
+		}
+		return Respuesta;
+
+
+	}
 	/**
 	 * Busca y retorna un comparendo en la lista con el ID dado.
 	 * @param idobject. ID del comparendo.

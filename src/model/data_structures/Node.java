@@ -3,7 +3,7 @@ package model.data_structures;
 public class Node <E>
 {
 	/**
-	 * Elemento Génerico que se almacena en el nodo.
+	 * Elemento Gï¿½nerico que se almacena en el nodo.
 	 */
 	private E e;
 	
@@ -13,7 +13,7 @@ public class Node <E>
 	private Node siguiente;
 	
 	/**
-	 * 	Método Constructor
+	 * 	Mï¿½todo Constructor
 	 * @param t2. Elemento que se almacenera en nodo.
 	 */
 	public Node(E t2)
@@ -43,8 +43,8 @@ public class Node <E>
 	}
 	
 	/**
-	 * Retorna el elemento genérico almacenado en el nodo.
-	 * @return Elemento Genérico.
+	 * Retorna el elemento genï¿½rico almacenado en el nodo.
+	 * @return Elemento Genï¿½rico.
 	 */
 	public E darE()
 	{

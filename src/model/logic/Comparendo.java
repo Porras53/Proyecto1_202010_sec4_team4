@@ -111,8 +111,10 @@ public class Comparendo implements Comparable<Comparendo>{
 		}
 		if(constanteComparaciones==1)
 		{
-			String[] datosreal=fecha.split("/");
-			String[] datos= o.getFecha().split("/");
+			
+			
+			String[] datosreal=fecha.split("T")[0].split("-");
+			String[] datos= o.getFecha().split("T")[0].split("-");
 
 			int mes1=Integer.parseInt(datosreal[1]);
 			int mes=Integer.parseInt(datos[1]);

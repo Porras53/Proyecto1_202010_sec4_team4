@@ -38,8 +38,8 @@ public class Controller {
 
 		while( !fin ){
 			view.printMenu();
-
-			int option = lector.nextInt();
+try {
+			int option = Integer.parseInt(lector.nextLine());
 			switch(option){
 			case 1:
 				modelo = new Modelo();
@@ -101,10 +101,7 @@ public class Controller {
 				System.out.println(" Ingrese la infraccion que desea buscar:");
 				String infraccio1B = lector.next();
 				Comparendo primero =modelo.method1B(infraccio1B);
-				System.out.println("object ID :" + primero.getId());					
-				System.out.println("object ID :" + primero.getId());
-				System.out.println("object ID :" + primero.getId());
-				System.out.println("object ID :" + primero.getId());
+				System.out.println("object ID :" + primero.getId());				
 				System.out.println("TipoServicio :" + primero.getTiposervi());
 				System.out.println("Localidad :" + primero.getLocalidad());
 				
@@ -116,8 +113,6 @@ public class Controller {
 				for (int j = 0; j < ArregloComparendo.length; j++) {
 					Comparendo actual2B = ArregloComparendo[j];
 					System.out.println("object ID :" + actual2B.getId());					
-					System.out.println("object ID :" + actual2B.getId());
-					System.out.println("object ID :" + actual2B.getId());
 					System.out.println("Fecha_HOra :" + actual2B.getFecha());
 					System.out.println("TipoServicio :" + actual2B.getTiposervi());
 					System.out.println("Localidad :" + actual2B.getLocalidad());
@@ -125,11 +120,22 @@ public class Controller {
 				
 				
 				break;	
+			case 7:
+				System.out.println(modelo.CompararComparendos3B());
+				break;
+			case 8:
+				System.out.println(modelo.generarGrafica3C());
+				break;
 
 			default: 
 				view.printMessage("--------- \n Opcion Invalida !! \n---------");
 				break;
 			}
+}
+catch(Exception e)
+{
+	e.printStackTrace();
+}
 		}
 
 	}	
