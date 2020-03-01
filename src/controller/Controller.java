@@ -93,6 +93,7 @@ public class Controller {
 						i++;
 					}
 					
+					view.printMessage("La cantidad de comaprendos la búsqueda fue: "+nueva.darLongitud());
 					
 					break;
 			
@@ -120,6 +121,59 @@ public class Controller {
 					break;
 					
 				case 5: 
+					view.printMessage("Ingrese la localidad: \n---------"); 
+					String localidad=lector.next();
+					
+					view.printMessage("Ingresa la fecha inicial( Año/Mes/Dia ): \n---------"); 
+					String fechadada3=lector.next();
+					
+					view.printMessage("Ingresa la fecha final( Año/Mes/Dia ): \n---------"); 
+					String fechadada4=lector.next();
+					
+					ListaDoblementeEncadenada<String> resultado = modelo.buscarCantidadComparendosInfraccionPorLocalidadyFechas(localidad, fechadada3, fechadada4);
+					view.printMessage("Comparación de comparendos en "+localidad.toUpperCase() +" del "+fechadada3+" al "+fechadada4);
+					view.printMessage("Infraccion | #Comparendos");
+					int i3=0;
+					
+					Node puntero2=resultado.darCabeza2();
+					while(i3<resultado.darLongitud())
+					{
+						view.printMessage(puntero2.darE() + "\n---------");
+						
+						puntero2=puntero2.darSiguiente();
+						i3++;
+					}
+					
+					break;	
+					
+				case 6: 
+					view.printMessage("Ingrese la cantidad de comparendos mayores que quiere ver: \n---------"); 
+					String n=lector.next();
+					
+					view.printMessage("Ingresa la fecha inicial( Año/Mes/Dia ): \n---------"); 
+					String fechadada5=lector.next();
+					
+					view.printMessage("Ingresa la fecha final( Año/Mes/Dia ): \n---------"); 
+					String fechadada6=lector.next();
+					
+					view.printMessage("Ranking de las "+n+" mayores infracciones del "+fechadada5+" al "+fechadada6);
+					view.printMessage("Infraccion | #Comparendos");
+					ListaDoblementeEncadenada<String> resultado2 = modelo.buscarCantidadComparendosNInfraccionesPorFechas(n, fechadada5, fechadada6);
+					
+					
+					int i4=0;
+					Node puntero3=resultado2.darCabeza2();
+					while(i4<resultado2.darLongitud())
+					{
+						view.printMessage(puntero3.darE().toString() + "\n---------");
+						
+						puntero3=puntero3.darSiguiente();
+						i4++;
+					}
+					
+					break;	
+					
+				case 7: 
 					view.printMessage("--------- \n Hasta pronto !! \n---------"); 
 					lector.close();
 					fin = true;

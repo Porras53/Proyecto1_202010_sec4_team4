@@ -343,13 +343,198 @@ public class Modelo {
 		return null;
 	}
 	
-	public ListaDoblementeEncadenada<String>  buscarCantidadComparendosInfraccionPorLocalidadyFechas(String localidad,String FechaI,String fechaF)
+	public ListaDoblementeEncadenada<String>  buscarCantidadComparendosInfraccionPorLocalidadyFechas(String localidad,String fechaI,String fechaF)
 	{
-		return null;
+		String[] datosreal=fechaI.split("/");
+		
+		int ano=Integer.parseInt(datosreal[0]);
+		int mes=Integer.parseInt(datosreal[1]);
+		int dia= Integer.parseInt(datosreal[2]);
+		Fecha fecha1=new Fecha(dia,mes,ano);
+		
+		datosreal=fechaI.split("/");
+		
+		ano=Integer.parseInt(datosreal[0]);
+		mes=Integer.parseInt(datosreal[1]);
+		dia= Integer.parseInt(datosreal[2]);
+		Fecha fecha2=new Fecha(dia,mes,ano);
+		
+		Node puntero= datosCola.darCabeza2();
+		int i=0;
+		ListaDoblementeEncadenada<Comparendo> comparendosfechas= new ListaDoblementeEncadenada<Comparendo>();
+		while(i < datosCola.darLongitud())
+		{
+			datosreal=((Comparendo)puntero.darE()).getFecha().split("/");
+			
+			int ano1=Integer.parseInt(datosreal[0]);
+			int mes1=Integer.parseInt(datosreal[1]);
+			int dia1= Integer.parseInt(datosreal[2]);
+			Fecha actual=new Fecha(dia1, mes1, ano1);
+			
+			String localidadactual=((Comparendo)puntero.darE()).getLocalidad();
+			
+			//System.out.println(actual.compareTo(fecha1) >= 0 );
+			//System.out.println(actual.compareTo(fecha2)<= 0);
+			//System.out.println(localidadactual.equalsIgnoreCase(localidad));
+			if(actual.compareTo(fecha1) >= 0 && actual.compareTo(fecha2) <= 0 && localidadactual.equalsIgnoreCase(localidad))
+			{
+				comparendosfechas.insertarFinal(((Comparendo)puntero.darE()));
+			}
+			i++;
+			puntero=puntero.darSiguiente();
+		}
+		Comparable[] nuevo= copiarComparendos(comparendosfechas);
+		
+		shellSortMenoraMayor(nuevo);
+		comparendosfechas= new ListaDoblementeEncadenada<Comparendo>();
+		pegarComparendos(nuevo, comparendosfechas);
+		
+		ListaDoblementeEncadenada<String> retorno= new ListaDoblementeEncadenada<>();
+		
+		i=0;
+		puntero=comparendosfechas.darCabeza2();
+		String infraccionactual=null;
+		if(puntero!=null)
+		{
+			infraccionactual=((Comparendo)puntero.darE()).getInfraccion();
+		}
+		int cont=1;
+		
+		while(i<comparendosfechas.darLongitud() && puntero!=null)
+		{
+			Comparendo actualsiguiente=null;
+			
+			String infrasiguiente=null;
+			
+			if(puntero.darSiguiente()!=null){
+			 actualsiguiente=(Comparendo)puntero.darSiguiente().darE();
+			 infrasiguiente=actualsiguiente.getInfraccion();
+			}
+			
+			if(infrasiguiente==null)
+			{
+				retorno.insertarFinal(infraccionactual+"        | "+cont);
+			}
+			
+			else if(infraccionactual.equals(infrasiguiente))
+			{
+				cont++;
+			}
+			else if(!infraccionactual.equals(infrasiguiente))
+			{
+				retorno.insertarFinal(infraccionactual+"        | "+cont);
+				cont=1;
+				infraccionactual=infrasiguiente;
+			}
+			
+			puntero=puntero.darSiguiente();
+			i++;
+		}
+		
+		
+		return retorno;
 	}
-	public ListaDoblementeEncadenada<String>  buscarCantidadComparendosNInfraccionesPorFechas(String n,String FechaI,String fechaF)
+	
+	
+	public ListaDoblementeEncadenada<String>  buscarCantidadComparendosNInfraccionesPorFechas(String n,String fechaI,String fechaF)
 	{
-		return null;
+		String[] datosreal=fechaI.split("/");
+		
+		int ano=Integer.parseInt(datosreal[0]);
+		int mes=Integer.parseInt(datosreal[1]);
+		int dia= Integer.parseInt(datosreal[2]);
+		Fecha fecha1=new Fecha(dia,mes,ano);
+		
+		datosreal=fechaI.split("/");
+		
+		ano=Integer.parseInt(datosreal[0]);
+		mes=Integer.parseInt(datosreal[1]);
+		dia= Integer.parseInt(datosreal[2]);
+		Fecha fecha2=new Fecha(dia,mes,ano);
+		
+		Node puntero= datosCola.darCabeza2();
+		int i=0;
+		ListaDoblementeEncadenada<Comparendo> comparendosfechas= new ListaDoblementeEncadenada<Comparendo>();
+		while(i < datosCola.darLongitud())
+		{
+			datosreal=((Comparendo)puntero.darE()).getFecha().split("/");
+			
+			int ano1=Integer.parseInt(datosreal[0]);
+			int mes1=Integer.parseInt(datosreal[1]);
+			int dia1= Integer.parseInt(datosreal[2]);
+			Fecha actual=new Fecha(dia1, mes1, ano1);
+			
+			String localidadactual=((Comparendo)puntero.darE()).getLocalidad();
+			
+			if(actual.compareTo(fecha1) >= 0 && actual.compareTo(fecha2) <= 0)
+			{
+				comparendosfechas.insertarFinal(((Comparendo)puntero.darE()));
+			}
+			i++;
+			puntero=puntero.darSiguiente();
+		}
+		Comparable[] nuevo= copiarComparendos(comparendosfechas);
+		
+		shellSortMenoraMayor(nuevo);
+		comparendosfechas= new ListaDoblementeEncadenada<Comparendo>();
+		pegarComparendos(nuevo, comparendosfechas);
+		
+		ListaDoblementeEncadenada retorno= new ListaDoblementeEncadenada<>();
+		
+		i=0;
+		puntero=comparendosfechas.darCabeza2();
+		String infraccionactual=null;
+		if(puntero!=null)
+		{
+			infraccionactual=((Comparendo)puntero.darE()).getInfraccion();
+		}
+		int cont=1;
+		
+		while(i<comparendosfechas.darLongitud() && puntero!=null)
+		{
+			Comparendo actualsiguiente=null;
+			
+			String infrasiguiente=null;
+			
+			if(puntero.darSiguiente()!=null){
+			 actualsiguiente=(Comparendo)puntero.darSiguiente().darE();
+			 infrasiguiente=actualsiguiente.getInfraccion();
+			}
+			
+			if(infrasiguiente==null)
+			{
+				retorno.insertarFinal(new InfraccionCantidad(infraccionactual,cont));
+			}
+			
+			else if(infraccionactual.equals(infrasiguiente))
+			{
+				cont++;
+			}
+			else if(!infraccionactual.equals(infrasiguiente))
+			{
+				retorno.insertarFinal(new InfraccionCantidad(infraccionactual,cont));
+				cont=1;
+				infraccionactual=infrasiguiente;
+			}
+			
+			puntero=puntero.darSiguiente();
+			i++;
+		}
+		
+		Comparable[] retorno1= copiarComparendos(retorno);
+		shellSortMayoraMenor(retorno1);
+		ListaDoblementeEncadenada retornofinal= new ListaDoblementeEncadenada();
+		
+		
+		
+		int z=0;
+		while(z < Integer.parseInt(n) && z <retorno1.length)
+		{
+			retornofinal.insertarFinal(retorno1[z]);
+			z++;
+		}
+		
+		return retornofinal;
 	}
 	public ListaDoblementeEncadenada<String>  mostrarASCIICantidadComparendosPorLocalidad()
 	{
