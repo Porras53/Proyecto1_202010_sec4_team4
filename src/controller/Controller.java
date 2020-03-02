@@ -70,6 +70,7 @@ public class Controller {
 					if(c.equals(null))
 					{
 						 view.printMessage("No se encontró ningún comparendo con la localidad dada. \n---------");
+						 view.printMessage("Debería intentar escribir bien la localidad... \n---------");
 					}
 					else
 					{
@@ -86,6 +87,7 @@ public class Controller {
 					if(co.equals(null))
 					{
 						 view.printMessage("No se encontró ningún comparendo con la localidad dada. \n---------");
+						 view.printMessage("Ingrese un código de infracción correcto... \n---------");
 					}
 					else
 					{
@@ -98,6 +100,33 @@ public class Controller {
 					view.printMessage("Ingresa la fecha( Año/Mes/Dia ): \n---------"); 
 					String fechadada=lector.next();
 					
+					try
+					{
+						String[] modo=fechadada.split("/");
+						
+						
+						int ano= Integer.parseInt(modo[0]);
+						int mes1=Integer.parseInt(modo[1]);
+						int dia= Integer.parseInt(modo[2]);
+						
+						if(ano!=2018)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia )20XX/XX/XX");
+						}
+						else if(mes1<1 && mes1>12)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia ) 20XX/XX/XX");
+						}
+						else if(dia<1 && dia>31)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia ) 20XX/XX/XX");
+						}
+					
+					}
+					catch(Exception e)
+					{
+						view.printMessage("Ingresa el correcto formato de fecha  ( Año/Mes/Dia ) 20XX/XX/XX");
+					}
 					ListaDoblementeEncadenada nueva=modelo.buscarComparendosPorFecha(fechadada);
 					
 					int i=0;
@@ -139,6 +168,53 @@ public class Controller {
 					
 					view.printMessage("Ingresa la fecha final( Año/Mes/Dia ): \n---------"); 
 					String fechadada2=lector.next();
+					
+					try
+					{
+						String[] modo=fechadada1.split("/");
+						
+						
+						int ano= Integer.parseInt(modo[0]);
+						int mes1=Integer.parseInt(modo[1]);
+						int dia= Integer.parseInt(modo[2]);
+						
+						if(ano!=2018)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia )20XX/XX/XX");
+						}
+						else if(mes1<1 && mes1>12)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia ) 20XX/XX/XX");
+						}
+						else if(dia<1 && dia>31)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia ) 20XX/XX/XX");
+						}
+						
+						modo=fechadada2.split("/");
+						
+						ano= Integer.parseInt(modo[0]);
+						mes1=Integer.parseInt(modo[1]);
+						dia= Integer.parseInt(modo[2]);
+						
+						if(ano!=2018)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia )20XX/XX/XX");
+						}
+						else if(mes1<1 && mes1>12)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia ) 20XX/XX/XX");
+						}
+						else if(dia<1 && dia>31)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia ) 20XX/XX/XX");
+						}
+					
+					}
+					catch(Exception e)
+					{
+						view.printMessage("Ingresa el correcto formato de fecha  ( Año/Mes/Dia ) 20XX/XX/XX");
+					}
 					
 					ListaDoblementeEncadenada nuevo0=modelo.buscarCantidadComparendosInfraccionPorFechas(fechadada1, fechadada2);
 					
@@ -184,6 +260,54 @@ public class Controller {
 					view.printMessage("Ingresa la fecha final( Año/Mes/Dia ): \n---------"); 
 					String fechadada4=lector.next();
 					
+					try
+					{
+						String[] modo=fechadada3.split("/");
+						
+						
+						int ano= Integer.parseInt(modo[0]);
+						int mes1=Integer.parseInt(modo[1]);
+						int dia= Integer.parseInt(modo[2]);
+						
+						if(ano!=2018)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia )20XX/XX/XX");
+						}
+						else if(mes1<1 && mes1>12)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia ) 20XX/XX/XX");
+						}
+						else if(dia<1 && dia>31)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia ) 20XX/XX/XX");
+						}
+						
+						modo=fechadada4.split("/");
+						
+						ano= Integer.parseInt(modo[0]);
+						mes1=Integer.parseInt(modo[1]);
+						dia= Integer.parseInt(modo[2]);
+						
+						if(ano!=2018)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia )20XX/XX/XX");
+						}
+						else if(mes1<1 && mes1>12)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia ) 20XX/XX/XX");
+						}
+						else if(dia<1 && dia>31)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia ) 20XX/XX/XX");
+						}
+					
+					}
+					catch(Exception e)
+					{
+						view.printMessage("Ingresa el correcto formato de fecha  ( Año/Mes/Dia ) 20XX/XX/XX");
+					}
+					
+					
 					ListaDoblementeEncadenada<String> resultado = modelo.buscarCantidadComparendosInfraccionPorLocalidadyFechas(localidad, fechadada3, fechadada4);
 					view.printMessage("Comparación de comparendos en "+localidad.toUpperCase() +" del "+fechadada3+" al "+fechadada4);
 					view.printMessage("Infraccion | #Comparendos");
@@ -210,6 +334,53 @@ public class Controller {
 					view.printMessage("Ingresa la fecha final( Año/Mes/Dia ): \n---------"); 
 					String fechadada6=lector.next();
 					
+					try
+					{
+						String[] modo=fechadada5.split("/");
+						
+						
+						int ano= Integer.parseInt(modo[0]);
+						int mes1=Integer.parseInt(modo[1]);
+						int dia= Integer.parseInt(modo[2]);
+						
+						if(ano!=2018)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia )20XX/XX/XX");
+						}
+						else if(mes1<1 && mes1>12)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia ) 20XX/XX/XX");
+						}
+						else if(dia<1 && dia>31)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia ) 20XX/XX/XX");
+						}
+						
+						modo=fechadada6.split("/");
+						
+						ano= Integer.parseInt(modo[0]);
+						mes1=Integer.parseInt(modo[1]);
+						dia= Integer.parseInt(modo[2]);
+						
+						if(ano!=2018)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia )20XX/XX/XX");
+						}
+						else if(mes1<1 && mes1>12)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia ) 20XX/XX/XX");
+						}
+						else if(dia<1 && dia>31)
+						{
+							view.printMessage("Ingresa el correcto formato de fecha ( Año/Mes/Dia ) 20XX/XX/XX");
+						}
+					
+					}
+					catch(Exception e)
+					{
+						view.printMessage("Ingresa el correcto formato de fecha  ( Año/Mes/Dia ) 20XX/XX/XX");
+					}
+					
 					view.printMessage("Ranking de las "+n+" mayores infracciones del "+fechadada5+" al "+fechadada6);
 					view.printMessage("Infraccion | #Comparendos");
 					ListaDoblementeEncadenada<String> resultado2 = modelo.buscarCantidadComparendosNInfraccionesPorFechas(n, fechadada5, fechadada6);
@@ -228,6 +399,8 @@ public class Controller {
 					break;	
 					
 				case 10: 
+					
+					
 					
 					break;	
 					
