@@ -203,18 +203,22 @@ public class Modelo {
 		ListaDoblementeEncadenada resp = new ListaDoblementeEncadenada();
 		ListaDoblementeEncadenada colaAuxiliar= datosCola;
 		int length = colaAuxiliar.darLongitud();
-		for(int i=0; i< length ;i++)
+		Node puntero=colaAuxiliar.darCabeza2();
+		int i=0;
+		while(i<length)
 		{
-			Comparendo temp= (Comparendo)colaAuxiliar.eliminarComienzo();
+			Comparendo temp= (Comparendo) puntero.darE();
 			
-			if(infraccion.compareTo(temp.getInfraccion())==0)
+			if(infraccion.equalsIgnoreCase(temp.getInfraccion()))
 			{
-				resp.insertarComienzo(temp);;
+				resp.insertarComienzo(temp);
 
 			}
+			i++;
+			puntero=puntero.darSiguiente();
 		}
 		Comparable[]  aOrdenar = copiarComparendos(resp,1);
-		shellSortMayoraMenor(aOrdenar);
+		shellSortMenoraMayor(aOrdenar);
 		ListaDoblementeEncadenada retorno = new ListaDoblementeEncadenada();
 		pegar(aOrdenar,retorno);
 		
