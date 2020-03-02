@@ -400,7 +400,7 @@ public class Controller {
 					
 				case 10: 
 					
-					
+					view.printMessage(modelo.mostrarASCIICantidadComparendosPorLocalidad());
 					
 					break;	
 					

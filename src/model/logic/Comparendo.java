@@ -128,6 +128,15 @@ public class Comparendo implements Comparable<Comparendo>{
 			else if(dia1<dia) {retorno=-1;}
 			
 		}
+		else if(constanteComparaciones==2)
+		{
+			String realinfra=localidad.toLowerCase();
+			String infra= compa.getLocalidad().toLowerCase();
+			
+			if(realinfra.compareTo(infra)<0){ retorno=-1;}
+			else if(realinfra.compareTo(infra)>0){ retorno=1;}
+			
+		}
 		
 		
 		return retorno;

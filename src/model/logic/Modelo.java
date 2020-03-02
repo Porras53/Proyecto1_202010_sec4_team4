@@ -69,7 +69,6 @@ public class Modelo {
 			String infraccion=gsonObjpropiedades.get("INFRACCION").getAsString();
 			String desinfraccion=gsonObjpropiedades.get("DES_INFRAC").getAsString();
 			String localidad=gsonObjpropiedades.get("LOCALIDAD").getAsString();
-
 			JsonObject gsonObjgeometria=gsonObj.get("geometry").getAsJsonObject();
 
 			JsonArray gsonArrcoordenadas= gsonObjgeometria.get("coordinates").getAsJsonArray();
@@ -775,9 +774,80 @@ public class Modelo {
 		
 		return retornofinal;
 	}
-	public ListaDoblementeEncadenada<String>  mostrarASCIICantidadComparendosPorLocalidad()
+	public String mostrarASCIICantidadComparendosPorLocalidad()
 	{
-		return null;
+		String respuesta= "Aproximación del número de comparendos por localidad. \n";
+		int contadorComparendos=0;
+		Comparendo[] nuevoArreglo= new Comparendo[datosCola.darLongitud()];
+		
+		String[] localidades={"USAQUEN","CHAPINERO","SANTA FE","SAN CRISTOBAL","USME","TUNJUELITO","BOSA","KENNEDY","FONTIBON","ENGATIVA","SUBA","BARRIOS UNIDOS","TEUSAQUILLO","LOS MARTIRES","ANTONIO NARIÃ‘O","PUENTE ARANDA","LA CANDELARIA","RAFAEL URIBE URIBE","CIUDAD BOLIVAR","SUMAPAZ","BOGOTA D.C.","Otro"};
+		
+		Node actual= datosCola.darCabeza2();
+		int i =0;
+		while(actual!=null)
+		{
+			nuevoArreglo[i] = (Comparendo)actual.darE();
+			((Comparendo)actual.darE()).setConstanteComparaciones(2);
+			actual=actual.darSiguiente();
+			i++;
+		}
+		
+		
+		shellSortMenoraMayor(nuevoArreglo);
+		String LocalidadActual = nuevoArreglo[0].getLocalidad();
+		for (int j = 0; j < nuevoArreglo.length; j++) {
+			
+			if(!LocalidadActual.equals(nuevoArreglo[j].getLocalidad()))
+			{
+				boolean encontrado=false;
+				for(int x=0;x<localidades.length && !encontrado;x++)
+				{
+					if(localidades[x]!=null){
+					if(localidades[x].equalsIgnoreCase(LocalidadActual))
+					{
+						localidades[x]=null;
+						encontrado=true;
+					}
+					}
+				}
+				
+				int cantidadAsteriscos = contadorComparendos/50;
+				int diferencia = 16- LocalidadActual.length();
+				respuesta += LocalidadActual;
+				for (int k = 0; k < diferencia; k++) {
+					respuesta+= "-";
+				}
+				respuesta+= "|";
+				for (int k = 0; k < cantidadAsteriscos; k++) {
+					respuesta+= "*";
+				}
+				if(contadorComparendos % 50 !=0)
+					respuesta+="*";
+				respuesta+="\n";
+				
+				
+				contadorComparendos=0;
+				LocalidadActual= nuevoArreglo[j].getLocalidad();
+			}
+			contadorComparendos++;
+		}
+		
+		for(int x=0;x<localidades.length;x++)
+		{
+			if(localidades[x]!=null)
+			{
+				int diferencia = 16- localidades[x].length();
+				respuesta += localidades[x];
+				for (int k = 0; k < diferencia; k++) {
+					respuesta+= "-";
+				}
+				respuesta+= "|";
+				respuesta+="sin comparendos";
+				respuesta+="\n";
+			}
+		}
+		
+		return respuesta;
 	}
 	
 	
