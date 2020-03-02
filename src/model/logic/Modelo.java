@@ -235,6 +235,7 @@ public class Modelo {
 		{
 			infraccionactual=((Comparendo)puntero.darE()).getInfraccion();
 		}
+		
 		int cont=1;
 		while(i<nuevo1.darLongitud() && puntero!=null)
 		{
@@ -385,7 +386,195 @@ public class Modelo {
 	
 	public ListaDoblementeEncadenada<String>  buscarCantidadComparendosInfraccionPorServicio()
 	{
-		return null;
+		
+		Node puntero= datosCola.darCabeza2();
+		int i=0;
+		ListaDoblementeEncadenada<Comparendo> particular= new ListaDoblementeEncadenada<Comparendo>();
+		ListaDoblementeEncadenada<Comparendo> publico= new ListaDoblementeEncadenada<Comparendo>();
+		while(i<datosCola.darLongitud())
+		{
+			if(((Comparendo)puntero.darE()).getTiposervi().equalsIgnoreCase("particular"))
+			{
+				particular.insertarFinal(((Comparendo)puntero.darE()));	
+			}
+			
+			else if(((Comparendo)puntero.darE()).getTiposervi().equalsIgnoreCase("Público"))
+			{
+				publico.insertarFinal(((Comparendo)puntero.darE()));
+			}
+			
+			
+			i++;
+			puntero=puntero.darSiguiente();
+		}
+		
+		Comparable[] particular2= copiarComparendos(particular,0);
+		Comparable[] publico2=copiarComparendos(publico,0);
+		shellSortMenoraMayor(particular2);
+		shellSortMenoraMayor(publico2);
+		particular= new ListaDoblementeEncadenada<Comparendo>();
+		publico= new ListaDoblementeEncadenada<Comparendo>();
+		pegar(particular2, particular);
+		pegar(publico2, publico );
+		
+		
+		ListaDoblementeEncadenada partiypubli= new ListaDoblementeEncadenada<>();
+		
+		i=0;
+		puntero=particular.darCabeza2();
+		String infraccionactual=null;
+		
+		if(puntero!=null)
+		{
+			infraccionactual=((Comparendo)puntero.darE()).getInfraccion();
+		}
+		
+		int cont=1;
+		while(i<particular.darLongitud() && puntero!=null)
+		{
+			Comparendo actualsiguiente=null;
+			
+			String infrasiguiente=null;
+			
+			if(puntero.darSiguiente()!=null){
+			 actualsiguiente=(Comparendo)puntero.darSiguiente().darE();
+			 infrasiguiente=actualsiguiente.getInfraccion();
+			}
+			
+			if(infrasiguiente==null)
+			{
+				partiypubli.insertarComienzo( new InfraccionFechas(infraccionactual,cont,0));
+			}
+			
+			else if(infraccionactual.equals(infrasiguiente))
+			{
+				cont++;
+			}
+			else if(!infraccionactual.equals(infrasiguiente))
+			{
+				partiypubli.insertarComienzo(new InfraccionFechas(infraccionactual,cont,0));
+				cont=1;
+				infraccionactual=infrasiguiente;
+			}
+			
+			puntero=puntero.darSiguiente();
+			i++;
+		}
+		
+		i=0;
+		puntero=publico.darCabeza2();
+		infraccionactual=null;
+		
+		if(puntero!=null)
+		{
+			infraccionactual=((Comparendo)puntero.darE()).getInfraccion();
+		}
+		
+		cont=1;
+		while(i<publico.darLongitud() && puntero!=null)
+		{
+			Comparendo actualsiguiente=null;
+			
+			String infrasiguiente=null;
+			
+			if(puntero.darSiguiente()!=null){
+			 actualsiguiente=(Comparendo)puntero.darSiguiente().darE();
+			 infrasiguiente=actualsiguiente.getInfraccion();
+			}
+			
+			if(infrasiguiente==null)
+			{
+				partiypubli.insertarComienzo( new InfraccionFechas(infraccionactual,0,cont));
+			}
+			
+			else if(infraccionactual.equals(infrasiguiente))
+			{
+				cont++;
+			}
+			else if(!infraccionactual.equals(infrasiguiente))
+			{
+				partiypubli.insertarComienzo(new InfraccionFechas(infraccionactual,0,cont));
+				cont=1;
+				infraccionactual=infrasiguiente;
+			}
+			
+			puntero=puntero.darSiguiente();
+			i++;
+		}
+		
+		Comparable[] nuevo= copiar(partiypubli);
+		shellSortMenoraMayor(nuevo);
+		ListaDoblementeEncadenada casiretorno=new ListaDoblementeEncadenada<>();
+		pegar(nuevo,casiretorno);
+		
+		ListaDoblementeEncadenada retorno=new ListaDoblementeEncadenada<>();
+		i=0;
+		puntero=casiretorno.darCabeza2();
+		while(i<casiretorno.darLongitud() && puntero!=null)
+		{
+			infraccionactual=((InfraccionFechas)puntero.darE()).getInfra();
+			
+			InfraccionFechas actualsiguiente=null;
+			
+			String infrasiguiente=null;
+			
+			if(puntero.darSiguiente()!=null){
+			 actualsiguiente=(InfraccionFechas)puntero.darSiguiente().darE();
+			 infrasiguiente=actualsiguiente.getInfra();
+			}
+			
+			if(infrasiguiente==null)
+			{
+				InfraccionFechas anterior=null;
+				
+				if(puntero.darAnterior()!=null)
+				{
+				anterior=(InfraccionFechas) puntero.darAnterior().darE();
+				
+				
+					if(!infraccionactual.equals(anterior.getInfra()))
+					{
+						retorno.insertarFinal(puntero.darE());
+					}
+				}
+				else
+				{
+					retorno.insertarFinal(puntero.darE());
+				}
+				
+			}
+			
+			else if(infraccionactual.equals(infrasiguiente))
+			{
+				int nff=((InfraccionFechas)puntero.darE()).getFechafinal()+actualsiguiente.getFechafinal();
+				int nfi=((InfraccionFechas)puntero.darE()).getFechainicial()+actualsiguiente.getFechainicial();
+				retorno.insertarFinal(new InfraccionFechas(infraccionactual,nfi,nff));
+			}
+			else if(!infraccionactual.equals(infrasiguiente))
+			{
+				String anterior=null;
+				
+				if(puntero.darAnterior()!=null)
+				{
+					anterior=((InfraccionFechas) puntero.darAnterior().darE()).getInfra();
+				
+					if(!infraccionactual.equals(anterior))
+					{
+					retorno.insertarFinal(puntero.darE());
+					}
+				
+				}
+				else 
+				{
+					retorno.insertarFinal(puntero.darE());
+				}
+			}
+			
+			puntero=puntero.darSiguiente();
+			i++;
+		}
+		
+		return retorno;
 	}
 	
 	public ListaDoblementeEncadenada<String>  buscarCantidadComparendosInfraccionPorLocalidadyFechas(String localidad,String fechaI,String fechaF)

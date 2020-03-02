@@ -158,6 +158,20 @@ public class Controller {
 					
 				case 7: 
 					
+					nuevo0=modelo.buscarCantidadComparendosInfraccionPorServicio();
+					
+					view.printMessage("Comparación de comparendos por servicio particular o público:");
+					view.printMessage("Infraccion |  Particular  |  Público ");
+					i2=0;
+					puntero1=nuevo0.darCabeza2();
+					while(i2<nuevo0.darLongitud())
+					{
+						view.printMessage(puntero1.darE().toString() + "\n---------");
+						
+						puntero1=puntero1.darSiguiente();
+						i2++;
+					}
+					
 					break;
 					
 				case 8: 
