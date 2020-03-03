@@ -141,6 +141,66 @@ public class Comparendo implements Comparable<Comparendo>{
 
 
 
+<<<<<<< HEAD
 
 
+=======
+	@Override
+	public int compareTo(Comparendo compa) {
+		// TODO Auto-generated method stub
+		
+		
+		int retorno=0;
+		if(constanteComparaciones==0)
+		{
+			String realinfra=infraccion;
+			String infra= compa.getInfraccion();
+
+		
+		
+			if(realinfra.compareTo(infra)<0){ retorno=-1;}
+			else if(realinfra.compareTo(infra)>0){ retorno=1;}
+		}
+		else if(constanteComparaciones==1)
+		{
+			String[] datosreal=fecha.split("/");
+			String[] datos= compa.getFecha().split("/");
+
+			int mes1=Integer.parseInt(datosreal[1]);
+			int mes=Integer.parseInt(datos[1]);
+			int dia1= Integer.parseInt(datosreal[2]);
+			int dia= Integer.parseInt(datos[2]);
+			
+			
+			
+			if(mes1>mes){ retorno=1;}
+			else if(mes1<mes) {retorno=-1;}
+			else if(dia1>dia) {retorno=1;}
+			else if(dia1<dia) {retorno=-1;}
+			
+		}
+		else if(constanteComparaciones==2)
+		{
+			String realinfra=localidad.toLowerCase();
+			String infra= compa.getLocalidad().toLowerCase();
+			
+			if(realinfra.compareTo(infra)<0){ retorno=-1;}
+			else if(realinfra.compareTo(infra)>0){ retorno=1;}
+			
+		}
+		
+		
+		return retorno;
+	}
+
+	public int getConstanteComparaciones() {
+		return constanteComparaciones;
+	}
+
+	public void setConstanteComparaciones(int constanteComparaciones) {
+		this.constanteComparaciones = constanteComparaciones;
+	}
+	
+	
+>>>>>>> partePorras
 }

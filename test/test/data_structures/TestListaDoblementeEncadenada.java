@@ -6,16 +6,16 @@ import org.junit.*;
 
 import model.data_structures.*;
 
-public class TestListaEncadenadaCola 
+public class TestListaDoblementeEncadenada 
 {
 
-	private ListaEncadenadaCola<String> cola;
+	private ListaDoblementeEncadenada<String> cola;
 	private static int TAMANO= 100;
 	
 	@Before
 	public void setUp1()
 	{
-		cola= new ListaEncadenadaCola<String>();
+		cola= new ListaDoblementeEncadenada<String>();
 	}
 	
 	public void setUp2()
@@ -70,7 +70,26 @@ public class TestListaEncadenadaCola
 		assertEquals(100,cola.darLongitud());
 		assertEquals(" "+99,cola.darUltimo());
 	}
+
+	@Test
+	public void testInsertarComienzo() {
+		setUp2();
+		// TODO
+		assertEquals(100,cola.darLongitud());
+		cola.insertarComienzo(" "+1000);
+		assertEquals(" "+1000,cola.darCabeza());
+	}
 	
+	
+	@Test
+	public void testEliminarFinal() {
+		setUp2();
+		// TODO
+		cola.eliminarFinal();
+		assertEquals(99,cola.darLongitud());
+		assertEquals(" "+98,cola.darUltimo());
+		
+	}
 	
 	@Test
 	public void testEliminarComienzo() {

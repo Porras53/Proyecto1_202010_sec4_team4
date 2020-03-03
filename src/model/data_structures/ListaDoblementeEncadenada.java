@@ -2,7 +2,7 @@ package model.data_structures;
 
 import java.util.Iterator;
 
-public class ListaEncadenadaCola <T>
+public class ListaDoblementeEncadenada <T extends Comparable<T>> 
 {
 	
 	/**
@@ -25,7 +25,7 @@ public class ListaEncadenadaCola <T>
 	/**
 	 * Metodo Constructro Lista Encadenada
 	 */
-	public ListaEncadenadaCola()
+	public ListaDoblementeEncadenada()
 	{
 		longitud=0;
 		cabeza=null;
@@ -40,6 +40,12 @@ public class ListaEncadenadaCola <T>
 	public T darCabeza()
 	{
 		return cabeza.darE();
+	}
+	
+	
+	public Node<T> darCabeza2()
+	{
+		return cabeza;
 	}
 	
 	/**
@@ -79,7 +85,28 @@ public class ListaEncadenadaCola <T>
 		else
 		{	
 			ultimo.cambiarSiguiente(node);
+			node.cambiarAnterior(ultimo);
 			ultimo=node;
+		}
+		longitud++;
+	}
+	
+	/**
+	 * Inserta un nuvo elemento genérico al principio de la lista.
+	 * @param t2. Elemento nuevo a agregar.
+	 */
+	
+	public void insertarComienzo(T t2)
+	{
+		Node<T> nodo = new Node<T>(t2);
+		if(esListaVacia())
+		{
+			cabeza = nodo;
+		}
+		else{
+		nodo.cambiarSiguiente(cabeza);
+		cabeza.cambiarAnterior(nodo);
+		cabeza= nodo;
 		}
 		longitud++;
 	}
@@ -105,13 +132,42 @@ public class ListaEncadenadaCola <T>
 		}
 	}
 	
+	
+	public T eliminarFinal()
+	{
+		if(cabeza!= null)
+		{
+			T retorno=null;
+			if(cabeza.darSiguiente()==null)
+			{
+				cabeza = null;
+			}
+			else
+			{
+				Node<T> penultimo= ultimo.darAnterior();
+				retorno= ultimo.darE();
+				penultimo.cambiarSiguiente(null);
+				ultimo= penultimo;
+			}
+			
+			longitud--;
+			return retorno;
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	
+	
 	/**
 	 * Retorna un objeto de la lista , dado su posición.
 	 * @param n. Posición en la lista.
 	 * @return Elemento de clase génerica.
 	 */
 	
-	public T darObjeto(int pos)
+	public Node darObjeto(int pos)
 	{
 		if(cabeza==null)
 		{
@@ -132,7 +188,7 @@ public class ListaEncadenadaCola <T>
 			}
 			else
 			{
-				return (T) puntero.darE();
+				return puntero;
 				
 			}
 		
@@ -149,6 +205,12 @@ public class ListaEncadenadaCola <T>
 	public T darUltimo()
 	{
 		return ultimo.darE();
+	}
+	
+	
+	public Node<T> darUltimo2()
+	{
+		return ultimo;
 	}
 	
 	
