@@ -968,6 +968,10 @@ public class Modelo {
 			i++;
 		}
 	}
+
+	public void setDatosCola(ListaDoblementeEncadenada datosCola) {
+		this.datosCola = datosCola;
+	}
 	
 	
 
